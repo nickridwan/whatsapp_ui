@@ -1,60 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_ui/services/user/user.dart';
+import 'package:whatsapp_ui/theme.dart';
 
-// This is the type used by the popup menu below.
-enum SampleItem { itemOne, itemTwo, itemThree }
-
-void main() => runApp(const PopupMenuApp());
-
-class PopupMenuApp extends StatelessWidget {
-  const PopupMenuApp({super.key});
+class ChatMenuApp extends StatefulWidget {
+  const ChatMenuApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          useMaterial3: true, colorSchemeSeed: const Color(0xff6750a4)),
-      home: const PopupMenuExample(),
-    );
-  }
+  State<ChatMenuApp> createState() => _ChatMenuAppState();
 }
 
-class PopupMenuExample extends StatefulWidget {
-  const PopupMenuExample({super.key});
-
-  @override
-  State<PopupMenuExample> createState() => _PopupMenuExampleState();
-}
-
-class _PopupMenuExampleState extends State<PopupMenuExample> {
-  SampleItem? selectedMenu;
+class _ChatMenuAppState extends State<ChatMenuApp> {
+  bool isRead = false;
+  int hour = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('PopupMenuButton')),
-      body: Center(
-        child: PopupMenuButton<SampleItem>(
-          initialValue: selectedMenu,
-          // Callback that sets the selected popup menu item.
-          onSelected: (SampleItem item) {
-            setState(() {
-              selectedMenu = item;
-            });
-          },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<SampleItem>>[
-            const PopupMenuItem<SampleItem>(
-              value: SampleItem.itemOne,
-              child: Text('Item 1'),
-            ),
-            const PopupMenuItem<SampleItem>(
-              value: SampleItem.itemTwo,
-              child: Text('Item 2'),
-            ),
-            const PopupMenuItem<SampleItem>(
-              value: SampleItem.itemThree,
-              child: Text('Item 3'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SizedBox(
+          child: Column(
+            children: user
+                .map(
+                  (e) => Container(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(e.image!),
+                          radius: 25,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                e.name,
+                                style: Style.whiteTextStyle.copyWith(
+                                    fontSize: 18, fontWeight: regular),
+                              ),
+                              Text(
+                                e.caption,
+                                style: Style.greyTextStyle.copyWith(
+                                    fontSize: 15, fontWeight: regular),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "${hour++}.00",
+                              style: !isRead
+                                  ? Style.greyTextStyle
+                                  : Style.greenTextStyle,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColor.kGreenColor,
+                              ),
+                              child: const Center(
+                                child: Text("1"),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppColor.kGreenColor,
+        child: const Center(
+          child: Icon(
+            Icons.message_rounded,
+          ),
         ),
       ),
     );

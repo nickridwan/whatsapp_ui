@@ -1,0 +1,3 @@
+class UserChat {
+  String? msg;
+}

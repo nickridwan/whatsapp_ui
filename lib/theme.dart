@@ -5,7 +5,7 @@ class AppColor {
 // Colors
   static Color kBlackColor = Colors.black;
   static Color kBlackAccentColor = const Color(0xff161616);
-  static Color kGreyColor = const Color(0xff94959B);
+  static Color kGreyColor = Color.fromARGB(255, 181, 181, 186);
   static Color kLineDarkColor = const Color(0xffEAEAEA);
   static Color kWhiteGreyColor = const Color(0xffF1F1F5);
   static Color kWhiteColor = const Color(0xffFFFFFF);

@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp_ui/screens/pages/calling/call.dart';
+import 'package:whatsapp_ui/screens/pages/chat/chat.dart';
+import 'package:whatsapp_ui/screens/pages/story/story.dart';
 import '../../main.dart';
 import '../../theme.dart';
 
@@ -13,7 +16,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late TabController _tabController;
-  Options? selectedMenu;
+
+  List tabMenuView = ["Chat", "Status", "Panggilan"];
 
   @override
   void initState() {
@@ -45,117 +49,56 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           actions: [
             IconButton(
               onPressed: () {},
-              icon: const Icon(
+              icon: Icon(
                 CupertinoIcons.camera,
                 size: 24.0,
+                color: AppColor.kWhiteGreyColor,
               ),
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(
+              icon: Icon(
                 CupertinoIcons.search,
                 size: 24.0,
+                color: AppColor.kWhiteGreyColor,
               ),
             ),
             IconButton(
-              onPressed: () {
-                PopupMenuButton<Options>(
-                  initialValue: selectedMenu,
-                  onSelected: (Options value) {
-                    setState(() {
-                      selectedMenu = value;
-                    });
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return <PopupMenuEntry<Options>>[
-                      const PopupMenuItem<Options>(
-                        value: Options.newGrup,
-                        child: Text("Option 1"),
-                      ),
-                      const PopupMenuItem<Options>(
-                        value: Options.newStream,
-                        child: Text("Option 2"),
-                      ),
-                      const PopupMenuItem<Options>(
-                        value: Options.deviceLinked,
-                        child: Text("Option 3"),
-                      ),
-                      const PopupMenuItem<Options>(
-                        value: Options.deviceConnect,
-                        child: Text("Option 4"),
-                      ),
-                      const PopupMenuItem<Options>(
-                        value: Options.setting,
-                        child: Text("Option 5"),
-                      ),
-                    ];
-                  },
-                );
-              },
-              icon: const Icon(
+              onPressed: () {},
+              icon: Icon(
                 Icons.more_vert,
                 size: 24.0,
+                color: AppColor.kWhiteGreyColor,
               ),
             ),
           ],
           bottom: TabBar(
             isScrollable: false,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            dragStartBehavior: DragStartBehavior.start,
             indicatorSize: TabBarIndicatorSize.tab,
             controller: _tabController,
             indicatorColor: AppColor.kGreenColor,
-            indicatorWeight: 4.0,
-            labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-            tabs: [
-              Text(
-                "Chat",
-                style: Style.greyTextStyle.copyWith(fontSize: 15),
-              ),
-              Text(
-                "Status",
-                style: Style.greyTextStyle.copyWith(fontSize: 15),
-              ),
-              Text(
-                "Panggilan",
-                style: Style.greyTextStyle.copyWith(fontSize: 15),
-              ),
-            ],
+            indicatorWeight: 2.5,
+            labelPadding: const EdgeInsets.all(10),
+            tabs: tabMenuView
+                .map(
+                  (e) => Text(
+                    e,
+                    style: Style.greyTextStyle.copyWith(fontSize: 15),
+                  ),
+                )
+                .toList(),
           ),
         ),
         body: TabBarView(
           controller: _tabController,
           physics: const BouncingScrollPhysics(),
           dragStartBehavior: DragStartBehavior.down,
-          children: [
-            Container(
-              height: double.infinity,
-              color: AppColor.kDarkBackgroundPrimaryColor,
-              child: Center(
-                child: Text(
-                  "Chat",
-                  style: Style.whiteGreyTextStyle.copyWith(fontSize: 50),
-                ),
-              ),
-            ),
-            Container(
-              height: double.infinity,
-              color: AppColor.kDarkBackgroundPrimaryColor,
-              child: Center(
-                child: Text(
-                  "Status",
-                  style: Style.whiteGreyTextStyle.copyWith(fontSize: 50),
-                ),
-              ),
-            ),
-            Container(
-              height: double.infinity,
-              color: AppColor.kDarkBackgroundPrimaryColor,
-              child: Center(
-                child: Text(
-                  "Panggilan",
-                  style: Style.whiteGreyTextStyle.copyWith(fontSize: 50),
-                ),
-              ),
-            ),
+          children: const [
+            ChatMenuApp(),
+            StoryMenuApp(),
+            CallingMenuApp(),
           ],
         ),
       ),
